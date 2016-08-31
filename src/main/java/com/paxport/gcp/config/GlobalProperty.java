@@ -1,43 +1,58 @@
 package com.paxport.gcp.config;
 
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.paxport.storify.Storify;
+import com.paxport.storify.annotation.Cache;
+import com.paxport.storify.annotation.Entity;
+import com.paxport.storify.annotation.Id;
+
+import org.immutables.value.Value;
+
+import java.util.Optional;
 
 /**
  * Store and Retrieve simple global properties
  */
-@Entity
+@Value.Immutable(builder = true)
+@JsonSerialize(as = ImmutableGlobalProperty.class)
+@JsonDeserialize(as = ImmutableGlobalProperty.class)
+@Entity(name="global-props", builderClass = ImmutableGlobalProperty.Builder.class)
 @Cache
-public class GlobalProperty {
+public abstract class GlobalProperty {
 
     @Id
-    private String name;
+    @Value.Parameter
+    public abstract String getName();
 
-    private String value;
+    @Value.Parameter
+    public abstract String getValue();
 
-    public String getName() {
-        return name;
-    }
-
-    public GlobalProperty setName(String name) {
-        this.name = name;
+    public GlobalProperty save() {
+        Storify.sfy().put(this);
         return this;
     }
 
-    public String getValue() {
-        return value;
+    public static Optional<GlobalProperty> fetch(String name) {
+        return Storify.sfy().load(GlobalProperty.class,name);
     }
 
-    public GlobalProperty setValue(String value) {
-        this.value = value;
-        return this;
+    public static Optional<String> fetchValue(String name) {
+        Optional<GlobalProperty> prop = fetch(name);
+        if ( prop.isPresent() ) {
+            return Optional.ofNullable(prop.get().getValue());
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
-    public static String fetch(String name){
-        Key<GlobalProperty> key = Key.create(GlobalProperty.class,name);
-        return ObjectifyService.ofy().load().key(key).safe().getValue();
-    }
+
+
+
+
+
+
+
 }
