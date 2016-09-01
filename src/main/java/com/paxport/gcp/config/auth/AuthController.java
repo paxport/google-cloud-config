@@ -30,12 +30,9 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<String> createNewToken(@RequestBody PaxportClaims claims, @RequestHeader Map<String,String> headers) {
-        //PaxportClaims principal = authService.parseHeaders(headers);
-        PaxportClaims principal = PaxportClaims.of("ajchesney",null,true,true,true);
+        PaxportClaims principal = authService.parseHeaders(headers);
         String token = authService.createNewToken(claims,principal);
         return ResponseEntity.ok(token);
     }
-
-
 
 }

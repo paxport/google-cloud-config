@@ -1,12 +1,10 @@
-package com.paxport.gcp.config.agent;
+package com.paxport.gcp.config;
 
-import com.paxport.gcp.config.ConfigTarget;
 import com.paxport.gcp.config.auth.AuthService;
 import com.paxport.gcp.config.auth.PaxportClaims;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,28 +18,26 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/config/agent")
-public class AgentConfigController {
+@RequestMapping("/v1/config/global")
+public class GlobalPropertyController {
 
     @Autowired
     private AuthService authService;
 
     @Autowired
-    private AgentConfigService agentConfigService;
+    private GlobalPropertyService globalPropertyService;
 
     @RequestMapping(
             method = RequestMethod.GET,
-            path = "/{agentId}/{configKey}/{target}",
-            produces = MediaType.APPLICATION_JSON_VALUE
+            path = "/{name}",
+            produces = MediaType.TEXT_PLAIN_VALUE
     )
-    public HttpEntity fetchAgentConfig(@PathVariable String agentId,
-                                       @PathVariable String configKey,
-                                       @PathVariable ConfigTarget target,
+    public HttpEntity fetchGlobalPropertyValue(@PathVariable String name,
                                        @RequestHeader Map<String,String> headers) {
         PaxportClaims principal = authService.parseHeaders(headers);
-        Optional<AgentConfig> agentConfig = agentConfigService.fetchAgentConfig(agentId,configKey,target,principal);
-        if ( agentConfig.isPresent() ) {
-            return ResponseEntity.ok(agentConfig.get().getJson());
+        Optional<String> value = globalPropertyService.fetchValue(name,principal);
+        if ( value.isPresent() ) {
+            return ResponseEntity.ok(value);
         }
         else {
             return ResponseEntity.notFound().build();
@@ -50,17 +46,14 @@ public class AgentConfigController {
 
     @RequestMapping(
             method = RequestMethod.PUT,
-            path = "/{agentId}/{configKey}/{target}",
-            consumes = MediaType.APPLICATION_JSON_VALUE
+            path = "/{name}",
+            consumes = MediaType.TEXT_PLAIN_VALUE
     )
-    public HttpEntity storeAgentConfig(@PathVariable String agentId,
-                                       @PathVariable String configKey,
-                                       @PathVariable ConfigTarget target,
-                                       @RequestBody String json,
+    public HttpEntity storeGlobalProperty(@PathVariable String name,
+                                       @RequestBody String value,
                                        @RequestHeader Map<String,String> headers) {
         PaxportClaims principal = authService.parseHeaders(headers);
-        agentConfigService.storeAgentConfig(agentId,configKey,target,json,principal);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        GlobalProperty prop = globalPropertyService.storeValue(name,value,principal);
+        return ResponseEntity.accepted().body(prop);
     }
-
 }
