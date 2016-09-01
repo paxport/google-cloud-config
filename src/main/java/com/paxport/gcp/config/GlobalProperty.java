@@ -48,6 +48,10 @@ public abstract class GlobalProperty {
         }
     }
 
+    public static GlobalProperty of(String name, String value){
+        return ImmutableGlobalProperty.of(name,value);
+    }
+
 
 
 

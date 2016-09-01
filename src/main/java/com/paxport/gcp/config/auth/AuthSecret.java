@@ -12,6 +12,12 @@ public class AuthSecret {
 
     private String secret;
 
+    public AuthSecret(){}
+
+    public AuthSecret(String secret){
+        this.secret = secret;
+    }
+
     public String getSecret() {
         if ( secret == null ) {
             secret = GlobalProperty.fetchValue("authentication.secret")

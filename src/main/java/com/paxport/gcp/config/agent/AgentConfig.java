@@ -2,6 +2,7 @@ package com.paxport.gcp.config.agent;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.paxport.gcp.config.ConfigTarget;
 import com.paxport.gcp.config.json.ConfigJsonUtils;
 import com.paxport.storify.Storify;
 import com.paxport.storify.annotation.Entity;
@@ -20,10 +21,10 @@ public abstract class AgentConfig {
 
     public abstract String getAgentId();
     public abstract String getConfigKey();
-    public abstract String getTarget();// TEST or PRODUCTION
+    public abstract ConfigTarget getTarget();// TEST or PRODUCTION
     public abstract String getJson();
 
-    public static String key (String agentId, String configKey, String target) {
+    public static String key (String agentId, String configKey, ConfigTarget target) {
         return agentId + ":" + configKey + ":" + target;
     }
 
@@ -33,7 +34,7 @@ public abstract class AgentConfig {
         return key(getAgentId(),getConfigKey(),getTarget());
     }
 
-    public static AgentConfig of(String agentId, String configKey, String target, Object obj){
+    public static AgentConfig of(String agentId, String configKey, ConfigTarget target, Object obj){
         return ImmutableAgentConfig.builder()
                 .agentId(agentId)
                 .configKey(configKey)
@@ -42,7 +43,7 @@ public abstract class AgentConfig {
                 .build();
     }
 
-    public static AgentConfig of(String agentId, String configKey, String target, String json){
+    public static AgentConfig of(String agentId, String configKey, ConfigTarget target, String json){
         return ImmutableAgentConfig.builder()
                 .agentId(agentId)
                 .configKey(configKey)
@@ -60,11 +61,11 @@ public abstract class AgentConfig {
         return this;
     }
 
-    public static Optional<AgentConfig> fetch(String agentId, String configKey, String target) {
+    public static Optional<AgentConfig> fetch(String agentId, String configKey, ConfigTarget target) {
         return Storify.sfy().load(AgentConfig.class,key(agentId,configKey,target));
     }
 
-    public static <E> Optional<E> fetchObject(String agentId, String configKey, String target, Class<E> targetType) {
+    public static <E> Optional<E> fetchObject(String agentId, String configKey, ConfigTarget target, Class<E> targetType) {
         Optional<AgentConfig> agentConfig = Storify.sfy().load(AgentConfig.class,key(agentId,configKey,target));
         if ( agentConfig.isPresent() ) {
             return Optional.of(agentConfig.get().buildObject(targetType));

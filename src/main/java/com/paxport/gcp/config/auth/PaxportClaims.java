@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.paxport.gcp.config.ConfigTarget;
 
 import org.immutables.value.Value;
 
@@ -110,7 +111,7 @@ public abstract class PaxportClaims {
 
     private static boolean getBoolean(Claims claims, String key) {
         if ( claims.containsKey(key) ) {
-            return claims.get(key, Boolean.TYPE);
+            return claims.get(key, Boolean.class);
         }
         else {
             return false;

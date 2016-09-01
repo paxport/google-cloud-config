@@ -24,8 +24,8 @@ public class AuthService {
 
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
-    @Value("${auth.token.header:'paxport-security-token'}")
-    private String authTokenHeaderName;
+    @Value("${auth.token.header:paxport-security-token}")
+    private String authTokenHeaderName = "paxport-security-token";
 
     @Autowired
     private AuthSecret secret;
@@ -56,7 +56,7 @@ public class AuthService {
     public PaxportClaims parsePaxportClaims(String token) {
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(secret.getSecret())
+                    .setSigningKey(ensureKey())
                     .parseClaimsJws(token)
                     .getBody();
             return PaxportClaims.of(claims);
@@ -81,5 +81,10 @@ public class AuthService {
 
     public String getAuthTokenHeaderName() {
         return authTokenHeaderName;
+    }
+
+    public AuthService setSecret(AuthSecret secret) {
+        this.secret = secret;
+        return this;
     }
 }
