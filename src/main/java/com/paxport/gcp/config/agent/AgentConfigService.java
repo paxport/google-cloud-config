@@ -15,9 +15,17 @@ import java.util.Optional;
 @Component
 public class AgentConfigService {
 
+    public Optional<AgentConfig> fetchAgentConfig(String agentId, String configKey, ConfigTarget target){
+        return fetchAgentConfig(agentId, configKey, target, PaxportClaims.boundPrincipal());
+    }
+
     public Optional<AgentConfig> fetchAgentConfig(String agentId, String configKey, ConfigTarget target, PaxportClaims principal){
         authoriseAgentRead(agentId,target,principal);
         return AgentConfig.fetch(agentId,configKey,target);
+    }
+
+    public void storeAgentConfig(String agentId, String configKey, ConfigTarget target, String json) {
+        storeAgentConfig(agentId, configKey, target, json, PaxportClaims.boundPrincipal());
     }
 
     public void storeAgentConfig(String agentId, String configKey, ConfigTarget target, String json, PaxportClaims principal) {
@@ -26,6 +34,9 @@ public class AgentConfigService {
     }
 
     private void authoriseAgentRead(String agentId, ConfigTarget target, PaxportClaims principal) {
+        if ( principal == null ) {
+            throw new UnauthorizedException("No principal found");
+        }
         if ( target == ConfigTarget.PRODUCTION && !principal.isProductionAllowed() ) {
             throw new UnauthorizedException("Not authorised for production");
         }

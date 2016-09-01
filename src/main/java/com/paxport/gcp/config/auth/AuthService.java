@@ -8,11 +8,14 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -34,14 +37,20 @@ public class AuthService {
 
     private Key key;
 
+    // 1 day from now
+    private Date expires() {
+        return Date.from(ZonedDateTime.now().plusDays(1).toInstant());
+    }
+
     public String createNewToken(PaxportClaims newClaims, PaxportClaims principal) {
         newClaims.validateCreation(principal);
         Map<String,Object> map = newClaims.claimsMap();
-        String token = Jwts.builder()
-                .setClaims(map)
-                .signWith(algo,ensureKey())
-                .compact();
-        return token;
+        JwtBuilder builder = Jwts.builder().setClaims(map);
+        if ( newClaims.isInternal() ) {
+            // expire internal tokens after one day
+            builder.setExpiration(expires());
+        }
+        return builder.signWith(algo,ensureKey()).compact();
     }
 
     public PaxportClaims parseHeaders(Map<String,String> requestHeaders) {
@@ -59,11 +68,18 @@ public class AuthService {
                     .setSigningKey(ensureKey())
                     .parseClaimsJws(token)
                     .getBody();
+            Date expires = claims.getExpiration();
+            if ( expires != null && new Date().after(expires) ) {
+                throw new UnauthorizedException("Internal Security Token expired at: " + expires);
+            }
             return PaxportClaims.of(claims);
         }
+        catch (UnauthorizedException e) {
+            throw e;
+        }
         catch (RuntimeException e) {
-            logger.info("parseClaims token " + token, e);
-            throw new RuntimeException("Invalid Security Token");
+            logger.warn("parseClaims token " + token, e);
+            throw new UnauthorizedException("Invalid Security Token");
         }
     }
 

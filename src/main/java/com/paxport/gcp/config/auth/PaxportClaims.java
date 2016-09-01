@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.paxport.gcp.config.ConfigTarget;
 
 import org.immutables.value.Value;
 
@@ -24,6 +23,8 @@ import io.jsonwebtoken.Claims;
 @JsonSerialize(as = ImmutablePaxportClaims.class)
 @JsonDeserialize(as = ImmutablePaxportClaims.class)
 public abstract class PaxportClaims {
+
+    private static final ThreadLocal<PaxportClaims> BOUND_PRINCIPAL = new ThreadLocal<>();
 
     private final static String USER_ID = "uid";
     private final static String AGENT_ID = "aid";
@@ -142,5 +143,17 @@ public abstract class PaxportClaims {
                 .admin(false)
                 .superUser(false)
                 .build();
+    }
+
+    public static void bindPrincipal(PaxportClaims principal){
+        BOUND_PRINCIPAL.set(principal);
+    }
+
+    public static PaxportClaims boundPrincipal() {
+        return BOUND_PRINCIPAL.get();
+    }
+
+    public static void unbindPrincipal(){
+        BOUND_PRINCIPAL.remove();
     }
 }
