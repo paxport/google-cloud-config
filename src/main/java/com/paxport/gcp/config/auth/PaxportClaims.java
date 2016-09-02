@@ -1,7 +1,5 @@
 package com.paxport.gcp.config.auth;
 
-import com.google.common.collect.ImmutableMap;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -96,7 +94,7 @@ public abstract class PaxportClaims {
         if ( isInternal() ){
             map.put(INTERNAL,true);
         }
-        return ImmutableMap.copyOf(map);
+        return map;
     }
 
     public static PaxportClaims of(Claims claims) {
