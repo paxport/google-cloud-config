@@ -18,7 +18,7 @@ import java.util.Optional;
 @Value.Immutable(builder = true)
 @JsonSerialize(as = ImmutableGlobalProperty.class)
 @JsonDeserialize(as = ImmutableGlobalProperty.class)
-@Entity(name="global-props", builderClass = ImmutableGlobalProperty.Builder.class)
+@Entity(kind="global-props", builderClass = ImmutableGlobalProperty.Builder.class)
 @Cache
 public abstract class GlobalProperty {
 

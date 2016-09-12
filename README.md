@@ -31,6 +31,7 @@ returns something like:
 
     PUT /v1/config/agent/testagent/payment.cards/TEST
     paxport-security-token: <agent admin security token>
+    Content-Type: application/json   
     
     {
       "cards" : [ {
@@ -42,6 +43,17 @@ returns something like:
         "expiryDate" : "2018-08-31",
         "cvc" : "737"
       } ]
+    }
+    
+## Upload credentials for multicommerce
+
+    PUT /v1/config/agent/testagent/multicommerce.credentials/TEST
+    paxport-security-token: <agent admin security token>
+    Content-Type: application/json
+    
+    {
+      "username" : "tester",
+      "password" : "password"
     }
 
 ## Store a Global Property

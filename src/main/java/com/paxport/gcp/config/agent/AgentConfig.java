@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.paxport.gcp.config.ConfigTarget;
 import com.paxport.gcp.config.json.ConfigJsonUtils;
 import com.paxport.storify.Storify;
+import com.paxport.storify.annotation.Cache;
 import com.paxport.storify.annotation.Entity;
 import com.paxport.storify.annotation.Id;
 import com.paxport.storify.annotation.IgnoreLoad;
@@ -16,7 +17,8 @@ import java.util.Optional;
 @Value.Immutable(builder = true)
 @JsonSerialize(as = ImmutableAgentConfig.class)
 @JsonDeserialize(as = ImmutableAgentConfig.class)
-@Entity(name="agent-config", builderClass = ImmutableAgentConfig.Builder.class)
+@Entity(kind="agent-config", builderClass = ImmutableAgentConfig.Builder.class)
+@Cache(expirationSeconds = 300) // cache for 5 mins only
 public abstract class AgentConfig {
 
     public abstract String getAgentId();
