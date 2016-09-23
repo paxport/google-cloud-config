@@ -60,7 +60,21 @@ public class AgentConfigController {
                                        @RequestHeader Map<String,String> headers) {
         PaxportClaims principal = authService.parseHeaders(headers);
         agentConfigService.storeAgentConfig(agentId,configKey,target,json,principal);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            path = "/{agentId}/{configKey}/{target}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public HttpEntity deleteAgentConfig(@PathVariable String agentId,
+                                       @PathVariable String configKey,
+                                       @PathVariable ConfigTarget target,
+                                       @RequestHeader Map<String,String> headers) {
+        PaxportClaims principal = authService.parseHeaders(headers);
+        agentConfigService.deleteAgentConfig(agentId,configKey,target,principal);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
 }

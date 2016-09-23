@@ -49,11 +49,23 @@ public class GlobalConfigController {
             path = "/{configKey}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public HttpEntity storeAgentConfig(@PathVariable String configKey,
+    public HttpEntity storeConfig(@PathVariable String configKey,
                                        @RequestBody String json,
                                        @RequestHeader Map<String,String> headers) {
         PaxportClaims principal = authService.parseHeaders(headers);
         configService.storeConfig(configKey,json,principal);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            path = "/{configKey}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public HttpEntity deleteConfig(@PathVariable String configKey,
+                                       @RequestHeader Map<String,String> headers) {
+        PaxportClaims principal = authService.parseHeaders(headers);
+        configService.deleteConfig(configKey,principal);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

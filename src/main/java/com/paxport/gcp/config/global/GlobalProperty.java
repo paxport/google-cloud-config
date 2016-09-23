@@ -3,7 +3,6 @@ package com.paxport.gcp.config.global;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.paxport.gcp.config.global.ImmutableGlobalProperty;
 import com.paxport.storify.Storify;
 import com.paxport.storify.annotation.Cache;
 import com.paxport.storify.annotation.Entity;
@@ -49,8 +48,14 @@ public abstract class GlobalProperty {
         }
     }
 
+
+
     public static GlobalProperty of(String name, String value){
         return ImmutableGlobalProperty.of(name,value);
+    }
+
+    public static void delete(String name) {
+        Storify.sfy().delete(GlobalProperty.class,name);
     }
 
 }

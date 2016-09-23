@@ -45,7 +45,7 @@ returns something like:
       } ]
     }
     
-## Upload credentials for multicommerce
+## Upload agent credentials for multicommerce
 
     PUT /v1/config/agent/testagent/multicommerce.credentials/TEST
     paxport-security-token: <agent admin security token>
@@ -58,7 +58,7 @@ returns something like:
 
 ## Store a Global Property
 
-    POST /v1/config/global/props/example.prop.name
+    POST /v1/config/global/props/example.prop
     paxport-security-token: <super user security token>
     
     example_prop_value
@@ -69,6 +69,45 @@ returns 202 accepted:
         "name": "example.prop",
         "value": "example_prop_value"
     }
+    
+## Store some Global Config like proxied endpoints
+
+    POST /v1/config/global/carrier.endpoints
+    paxport-security-token: <super user security token>
+    
+    {
+        "proxyServerIPs": [
+            "10.128.0.7"
+        ],
+        "endpoints": [
+            {
+                "name": "navitaire-ZB",
+                "target": "TEST",
+                "url": "http://${proxyserver-ip}:8001",
+                "credentials": {
+                    "username": "MULAPI",
+                    "password": "Newskies1",
+                    "properties": {
+                        "contractVersion": "0"
+                    }
+                }
+            },
+            {
+                "name": "navitaire-ZB",
+                "target": "PRODUCTION",
+                "url": "http://${proxyserver-ip}:8002",
+                "credentials": {
+                    "username": "MULAPI",
+                    "password": "Newskies1",
+                    "properties": {
+                        "contractVersion": "0"
+                    }
+                }
+            }
+        ]
+    }
+    
+returns 202 accepted
 
 
 ## To Release new version to Bintray

@@ -33,6 +33,11 @@ public class AgentConfigService {
         AgentConfig.of(agentId,configKey,target,json).save();
     }
 
+    public void deleteAgentConfig(String agentId, String configKey, ConfigTarget target, PaxportClaims principal) {
+        authoriseAgentWrite(agentId,target,principal);
+        AgentConfig.delete(agentId,configKey,target);
+    }
+
     private void authoriseAgentRead(String agentId, ConfigTarget target, PaxportClaims principal) {
         if ( principal == null ) {
             throw new UnauthorizedException("No principal found");

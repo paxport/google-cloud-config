@@ -39,5 +39,8 @@ public class GlobalConfigService {
         }
     }
 
-
+    public void deleteConfig(String configKey, PaxportClaims principal) {
+        authorise(principal);
+        GlobalConfig.delete(configKey);
+    }
 }

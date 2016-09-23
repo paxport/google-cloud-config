@@ -64,4 +64,8 @@ public abstract class GlobalConfig {
             return Optional.empty();
         }
     }
+
+    public static void delete(String configKey) {
+        Storify.sfy().delete(GlobalConfig.class,configKey);
+    }
 }

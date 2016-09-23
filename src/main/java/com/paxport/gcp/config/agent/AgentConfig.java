@@ -81,4 +81,8 @@ public abstract class AgentConfig {
             return Optional.empty();
         }
     }
+
+    public static void delete(String agentId, String configKey, ConfigTarget target) {
+        Storify.sfy().delete(AgentConfig.class,key(agentId,configKey,target));
+    }
 }
