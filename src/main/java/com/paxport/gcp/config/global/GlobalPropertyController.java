@@ -1,4 +1,4 @@
-package com.paxport.gcp.config;
+package com.paxport.gcp.config.global;
 
 import com.paxport.gcp.config.auth.AuthService;
 import com.paxport.gcp.config.auth.PaxportClaims;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/config/global")
+@RequestMapping("/v1/config/global/props")
 public class GlobalPropertyController {
 
     @Autowired

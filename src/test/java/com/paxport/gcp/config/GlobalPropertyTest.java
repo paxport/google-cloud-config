@@ -1,5 +1,7 @@
 package com.paxport.gcp.config;
 
+import com.paxport.gcp.config.global.GlobalProperty;
+
 import org.junit.Assert;
 import org.junit.Test;
 

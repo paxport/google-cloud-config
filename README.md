@@ -58,7 +58,7 @@ returns something like:
 
 ## Store a Global Property
 
-    POST /v1/config/global/example.prop.name
+    POST /v1/config/global/props/example.prop.name
     paxport-security-token: <super user security token>
     
     example_prop_value

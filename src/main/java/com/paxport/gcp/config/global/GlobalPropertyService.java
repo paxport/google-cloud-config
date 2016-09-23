@@ -1,8 +1,9 @@
-package com.paxport.gcp.config;
+package com.paxport.gcp.config.global;
 
 
 import com.paxport.gcp.config.auth.PaxportClaims;
 import com.paxport.gcp.config.auth.UnauthorizedException;
+import com.paxport.gcp.config.global.GlobalProperty;
 
 import org.springframework.stereotype.Component;
 

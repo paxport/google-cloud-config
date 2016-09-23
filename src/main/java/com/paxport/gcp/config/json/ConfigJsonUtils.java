@@ -1,6 +1,7 @@
 package com.paxport.gcp.config.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -20,6 +21,14 @@ public class ConfigJsonUtils {
     }
 
     public static <E> E fromJson (String json, Class<E> targetType) {
+        try {
+            return mapper.readValue(json,targetType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <E> E fromJson (String json, TypeReference<E> targetType) {
         try {
             return mapper.readValue(json,targetType);
         } catch (IOException e) {

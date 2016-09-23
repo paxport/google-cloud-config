@@ -1,5 +1,6 @@
 package com.paxport.gcp.config.agent;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.paxport.gcp.config.ConfigTarget;
@@ -55,6 +56,10 @@ public abstract class AgentConfig {
     }
 
     public <E> E buildObject(Class<E> targetType){
+        return ConfigJsonUtils.fromJson(getJson(),targetType);
+    }
+
+    public <E> E buildObject(TypeReference<E> targetType){
         return ConfigJsonUtils.fromJson(getJson(),targetType);
     }
 

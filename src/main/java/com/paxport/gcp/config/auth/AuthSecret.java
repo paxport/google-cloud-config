@@ -1,6 +1,6 @@
 package com.paxport.gcp.config.auth;
 
-import com.paxport.gcp.config.GlobalProperty;
+import com.paxport.gcp.config.global.GlobalProperty;
 
 import org.springframework.stereotype.Component;
 
