@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.paxport.gcp.config.ConfigTarget;
-import com.paxport.gcp.config.json.ConfigJsonUtils;
+import com.paxport.json.JsonUtils;
 import com.paxport.storify.Storify;
 import com.paxport.storify.annotation.Cache;
 import com.paxport.storify.annotation.Entity;
@@ -42,7 +42,7 @@ public abstract class AgentConfig {
                 .agentId(agentId)
                 .configKey(configKey)
                 .target(target)
-                .json(ConfigJsonUtils.toJson(obj))
+                .json(JsonUtils.toJson(obj))
                 .build();
     }
 
@@ -56,11 +56,11 @@ public abstract class AgentConfig {
     }
 
     public <E> E buildObject(Class<E> targetType){
-        return ConfigJsonUtils.fromJson(getJson(),targetType);
+        return JsonUtils.fromJson(getJson(),targetType);
     }
 
     public <E> E buildObject(TypeReference<E> targetType){
-        return ConfigJsonUtils.fromJson(getJson(),targetType);
+        return JsonUtils.fromJson(getJson(),targetType);
     }
 
     public AgentConfig save() {

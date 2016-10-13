@@ -58,7 +58,7 @@ public class GlobalConfigController {
     }
 
     @RequestMapping(
-            method = RequestMethod.PUT,
+            method = RequestMethod.DELETE,
             path = "/{configKey}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
