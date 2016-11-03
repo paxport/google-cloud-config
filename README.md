@@ -109,6 +109,12 @@ returns 202 accepted:
     
 returns 202 accepted
 
+## Setup Access Initially
+
+Install gcloud tools then:
+
+    gcloud beta auth application-default login
+
 
 ## To Release new version to Bintray
 
