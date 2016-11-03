@@ -125,4 +125,20 @@
 
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray-paxportuk-maven</id>
+            <name>paxportuk-maven</name>
+            <url>https://api.bintray.com/maven/paxportuk/maven/com.paxport.google-cloud-config/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <connection>scm:git:https://github.com/paxport/google-cloud-config.git</connection>
+        <developerConnection>scm:git:git@github.com:paxport/google-cloud-config.git</developerConnection>
+        <url>https://github.com/paxport/google-cloud-config.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+
 </project>
