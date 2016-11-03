@@ -66,12 +66,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.paxport</groupId>
-            <artifactId>json-utils</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>19.0</version>
@@ -81,6 +75,14 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.6.0</version>
+        </dependency>
+
+        <!-- Paxport Deps -->
+
+        <dependency>
+            <groupId>com.paxport</groupId>
+            <artifactId>json-utils</artifactId>
+            <version>1.0.2</version>
         </dependency>
 
         <dependency>
