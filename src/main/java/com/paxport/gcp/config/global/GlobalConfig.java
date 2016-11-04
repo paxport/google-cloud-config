@@ -17,7 +17,7 @@ import java.util.Optional;
 @JsonSerialize(as = ImmutableGlobalConfig.class)
 @JsonDeserialize(as = ImmutableGlobalConfig.class)
 @Entity(kind="global-config", builderClass = ImmutableGlobalConfig.Builder.class)
-@Cache(expirationSeconds = 300) // cache for 5 mins only
+@Cache(expirationSeconds = 120) // cache for 2 mins only
 public abstract class GlobalConfig {
 
     @Id

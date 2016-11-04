@@ -19,7 +19,7 @@ import java.util.Optional;
 @JsonSerialize(as = ImmutableGlobalProperty.class)
 @JsonDeserialize(as = ImmutableGlobalProperty.class)
 @Entity(kind="global-props", builderClass = ImmutableGlobalProperty.Builder.class)
-@Cache
+@Cache(expirationSeconds = 120) // cache for 2 mins only
 public abstract class GlobalProperty {
 
     @Id

@@ -19,7 +19,7 @@ import java.util.Optional;
 @JsonSerialize(as = ImmutableAgentConfig.class)
 @JsonDeserialize(as = ImmutableAgentConfig.class)
 @Entity(kind="agent-config", builderClass = ImmutableAgentConfig.Builder.class)
-@Cache(expirationSeconds = 300) // cache for 5 mins only
+@Cache(expirationSeconds = 120) // cache for 2 mins only
 public abstract class AgentConfig {
 
     public abstract String getAgentId();
