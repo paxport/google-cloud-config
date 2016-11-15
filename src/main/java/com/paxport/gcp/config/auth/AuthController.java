@@ -1,6 +1,7 @@
 package com.paxport.gcp.config.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-/**
- * Created by ajchesney on 23/08/2016.
- */
 @RestController
 @RequestMapping("/v1/auth")
+@Profile("config-endpoints")
 public class AuthController {
 
     @Autowired

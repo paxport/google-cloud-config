@@ -5,6 +5,8 @@ Spring Boot based generic auth and config service for Paxport using Google Cloud
 
 Each config store/retrieve requires a paxport-security-token header.
 
+These endpoints will only be exposed when the *config-endpoints* Spring Profile is active
+
 ## Create new Security tokens for Agent systems
 
     POST /v1/auth

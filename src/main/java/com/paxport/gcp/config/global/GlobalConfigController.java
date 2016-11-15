@@ -4,6 +4,7 @@ import com.paxport.gcp.config.auth.AuthService;
 import com.paxport.gcp.config.auth.PaxportClaims;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/config/global")
+@Profile("config-endpoints")
 public class GlobalConfigController {
 
     @Autowired
