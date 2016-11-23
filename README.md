@@ -1,13 +1,65 @@
 Google Cloud Config
 ===================
 
-Spring Boot based generic auth and config service for Paxport using Google Cloud Datastore.
+Spring Boot based generic auth and config service for Paxport using Google Cloud Datastore and cached in Memcache.
 
-Each config store/retrieve requires a paxport-security-token header.
+### Simple Global Properties
+    
+    // Create a property and save it to datastore
+    GlobalProperty gp = GlobalProperty.of("test.global.prop","foo");
+    gp.save();
 
-These endpoints will only be exposed when the *config-endpoints* Spring Profile is active
+    // retrieve property value from datastore
+    Optional<String> value = GlobalProperty.fetchValue("test.global.prop");
+    
+### Complex Global Config
+    
+    List<String> someConfig = new ArrayList<>();
+    someConfig.add("foo");
+    someConfig.add("bar");
 
-## Create new Security tokens for Agent systems
+    // save some arbitrary config object against the given key
+    GlobalConfig.of("global-config-test-put-and-get",someConfig)
+    .save();
+
+    // retrieve the config and unmarshall into Java Object
+    List<String> result = GlobalConfig.fetch("global-config-test-put-and-get")
+    .get()
+    .buildObject(new TypeReference<List<String>>(){});
+    
+### Agent Config
+
+    List<String> someConfig = new ArrayList<>();
+    someConfig.add("foo");
+    someConfig.add("bar");
+
+    // save some arbitrary config object against the given key, agent id & target
+    AgentConfig.of(
+        "test-agent", 
+        "agent-config-test-put-and-get", 
+        ConfigTarget.TEST,
+        someConfig
+    )
+    .save();
+
+    // retrieve the config and unmarshall into Java Object
+    List<String> result = AgentConfig.fetch(
+        "test-agent", 
+        "agent-config-test-put-and-get", 
+        ConfigTarget.TEST
+    )
+    .get()
+    .buildObject(new TypeReference<List<String>>(){});
+        
+
+
+## UI is a set of REST endpoints
+
+* Each config store/retrieve requires a paxport-security-token header.
+* These endpoints will only be exposed when the *config-endpoints* Spring Profile is active. 
+* You can use a tool like [Postman](https://www.getpostman.com) to GET/POST.
+
+### Create new Security tokens for Agent systems
 
     POST /v1/auth
     paxport-security-token: <super user security token>
@@ -29,7 +81,7 @@ returns something like:
     eyJhbGciOiJIUzUxMiJ9.eyJ1aWQiOiJwYXhzaG9wIiwiYWlkIjoidGVzdGFnZW50In0.eWWDuOJMqhEUU63GKV--YNutLEwFDW2mOUBD87PLXKN1LMFDYxwoFX9bwnYurqf2vB0xB6yI9sshZfgyv9E_fg
 
 
-## Upload a new config object like a PaymentCardSet
+### Upload a new config object like a PaymentCardSet
 
     PUT /v1/config/agent/testagent/payment.cards/TEST
     paxport-security-token: <agent admin security token>
@@ -47,7 +99,7 @@ returns something like:
       } ]
     }
     
-## Upload agent credentials for multicommerce
+### Upload agent credentials for multicommerce
 
     PUT /v1/config/agent/testagent/multicommerce.credentials/TEST
     paxport-security-token: <agent admin security token>
@@ -58,7 +110,7 @@ returns something like:
       "password" : "password"
     }
 
-## Store a Global Property
+### Store a Global Property
 
     POST /v1/config/global/props/example.prop
     paxport-security-token: <super user security token>
@@ -72,7 +124,7 @@ returns 202 accepted:
         "value": "example_prop_value"
     }
     
-## Store some Global Config like proxied endpoints
+### Store some Global Config like proxied endpoints
 
     POST /v1/config/global/carrier.endpoints
     paxport-security-token: <super user security token>
